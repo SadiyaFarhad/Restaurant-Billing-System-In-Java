@@ -1,0 +1,190 @@
+package restaurant12;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
+import java.awt.print.PrinterException;
+
+public class Restaurant12 extends JFrame {
+    JLabel Customer, Name, Contact, Food, Drinks, Type,AmountB;
+    JTextField tNumber, tContact, tName;
+    JComboBox<String> c1, c2;
+    JRadioButton b1, b2;
+    JTextArea area1;
+    JButton reset, print, receipt;
+    JButton calculate;  // Add a new button for calculating the total amount
+    JLabel Amount;
+    JTextField tAmount;
+
+    Restaurant12() {
+         
+      setTitle("RESTAURANT BILLING SYSTEM");
+        setSize(800, 600);
+        setLayout(null);
+        JLabel labels=new JLabel("<html><font color='blue'>hello,</font></html>");
+        JFrame frames=new JFrame("hh");
+        frames.add(labels);
+
+        // Labels
+        Customer = new JLabel("Customer No");
+        Customer.setBounds(20,50,120,30);
+        frames.setVisible(true);
+        Name = new JLabel("Name");
+        Name.setBounds(20, 100, 120, 30);
+
+        Contact = new JLabel("Contact");
+        Contact.setBounds(20, 150, 120, 30);
+
+        Food = new JLabel("Food");
+        Food.setBounds(20, 200, 120, 30);
+
+        Drinks = new JLabel("Drinks");
+        Drinks.setBounds(20, 250, 120, 30);
+
+        Type = new JLabel("Type");
+        Type.setBounds(20, 300, 120, 30);
+
+        // Textfields
+        tNumber = new JTextField();
+        tNumber.setBounds(150, 50, 200, 30);
+        tContact = new JTextField();
+        tContact.setBounds(150, 150, 200, 30);
+        tName = new JTextField();
+        tName.setBounds(150, 100, 200, 30);
+
+        // Radio Buttons
+        b1 = new JRadioButton("Diet");
+        b1.setBounds(200, 300, 60, 30);
+        b2 = new JRadioButton("Normal");
+        b2.setBounds(300, 300, 80, 30);
+
+        // Combo Boxes
+        String[] Foo = { "Pizza", "Pasta", "Burger" };
+        c1 = new JComboBox<>(Foo);
+        c1.setBounds(150, 200, 120, 30);
+
+        String[] Drim = { "Lemon Juice", "Apple Juice", "Water" };
+        c2 = new JComboBox<>(Drim);
+        c2.setBounds(150, 250, 120, 30);
+
+        // Text Area
+        area1 = new JTextArea();
+        area1.setBounds(400, 50, 300, 400);
+
+        // Buttons
+        reset = new JButton("Reset");
+        reset.setBounds(100, 350, 80, 40);
+
+        print = new JButton("Print");
+        print.setBounds(200, 350, 80, 40);
+
+        receipt = new JButton("Receipt");
+        receipt.setBounds(300, 350,80,35);
+
+    calculate = new JButton("Calculate");
+    calculate.setBounds(200, 400, 100, 40);
+    getContentPane().add(calculate);
+
+    Amount = new JLabel("Calculate Amount -");
+    Amount.setBounds(20, 400, 120, 30);
+    getContentPane().add(Amount);
+    AmountB = new JLabel("Total Bill is:");
+    AmountB.setBounds(20, 450, 120, 30);
+    getContentPane().add(AmountB);
+    tAmount = new JTextField();
+    tAmount.setBounds(150, 450, 200, 30);
+       
+       getContentPane().add(tAmount);
+        getContentPane().add(area1);
+        getContentPane().add(reset);
+        getContentPane().add(print);
+        getContentPane().add(receipt);
+        getContentPane().add(Customer);
+        getContentPane().add(Name);
+        getContentPane().add(Contact);
+        getContentPane().add(Food);
+        getContentPane().add(Drinks);
+        getContentPane().add(Type);
+        getContentPane().add(tNumber);
+        getContentPane().add(tContact);
+        getContentPane().add(tName);
+        getContentPane().add(b1);
+        getContentPane().add(b2);
+        getContentPane().add(c1);
+        getContentPane().add(c2);
+
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        reset.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tName.setText("");
+                tContact.setText("");
+                tNumber.setText("");
+                area1.setText("");
+            }
+        });
+
+        print.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    area1.print();
+                } catch (PrinterException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        });
+
+        receipt.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                area1.setText("Customer Name: " + tName.getText() + "\nCustomer Contact: " + tContact.getText()
+                        + "\nCustomer Number: " + tNumber.getText() + "\nAmount: " + tAmount.getText());
+                area1.append("\nFood: " + c1.getSelectedItem());
+                area1.append("\nDrinks: " + c2.getSelectedItem());
+                area1.append("\nType: " + (b1.isSelected() ? "Diet" : "Normal"));
+                
+            }
+        });
+    calculate.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            // Calculate the amount based on selected items
+            double foodPrice = 0;
+            double drinkPrice = 0;
+
+            String selectedFood = (String) c1.getSelectedItem();
+            String selectedDrink = (String) c2.getSelectedItem();
+
+            if (selectedFood.equals("Pizza")) {
+                foodPrice = 10.0;
+            } else if (selectedFood.equals("Pasta")) {
+                foodPrice = 8.0;
+            } else if (selectedFood.equals("Burger")) {
+                foodPrice = 6.0;
+            }
+
+            if (selectedDrink.equals("Lemon Juice")) {
+                drinkPrice = 3.0;
+            } else if (selectedDrink.equals("Apple Juice")) {
+                drinkPrice = 2.5;
+            } else if (selectedDrink.equals("Water")) {
+                drinkPrice = 1.0;
+            }
+
+            double totalAmount = foodPrice + drinkPrice;
+            tAmount.setText(String.format("%.2f", totalAmount));  // Displays ao decimal places
+        }
+    });
+    
+}
+
+    public static void main(String[] args) {
+        new Restaurant12();
+
+    }
+}
+
