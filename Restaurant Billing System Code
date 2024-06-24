@@ -1,3 +1,4 @@
+#Create file name as Restaurant12 which is same as class name.
 package restaurant12;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
